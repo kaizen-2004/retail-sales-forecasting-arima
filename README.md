@@ -22,29 +22,31 @@ Build a sales forecasting system to process online retail sales data (~541K reco
 
 ![Sales Distribution](reports/screenshots/01_sales_distribution.png)
 
-**Business Question:** *What is the typical order value, and how are sales distributed across transactions?*
+**What question does this answer?**
+> "How much do customers typically spend per order?"
 
-**Insights:**
-- **Right-skewed distribution** — majority of transactions are small (< £50), with a long tail of large orders
-- **Median transaction: ~£12** vs **Mean: ~£22** — outliers pull the average up
-- **Bulk orders exist** — some transactions exceed £1,000, likely B2B wholesale purchases
-- **Actionable insight:** Focus inventory on high-volume, low-value items; bulk pricing strategies for large orders
+**What the chart shows:**
+- Most orders are small — under £50
+- A few very large orders (over £1,000) skew the average higher
+- Typical order is around £12, but the average is £22 because of those big orders
 
-**Data Story:** The company operates as a B2B wholesaler — most orders are small replenishment purchases, but occasional large bulk orders from retailers significantly impact revenue.
+**Why it matters:**
+This is a B2B wholesaler, not a regular retail store. Small orders are routine restocks from regular customers. The big orders are likely bulk purchases from other retailers. Knowing this helps with inventory planning and pricing strategies.
 
 ---
 
 ### 2. Top 10 Countries by Sales
 
-**Business Question:** *Where are our biggest markets, and should we focus expansion efforts?*
+**What question does this answer?**
+> "Where are our biggest customers located?"
 
-**Insights:**
-- **United Kingdom dominates** (~80% of revenue) — home market is primary revenue driver
-- **EIRE (Ireland)** and **Germany** are secondary markets
-- **Long tail of countries** — 37 countries total, but top 3 account for majority of sales
-- **Actionable insight:** Consider targeted marketing in secondary markets; investigate why UK concentration is so high
+**What the chart shows:**
+- United Kingdom accounts for about 80% of all sales
+- Ireland and Germany are distant second and third
+- We sell to 37 countries, but most revenue comes from just a few
 
-**Data Story:** The business is heavily UK-focused with some European penetration. International expansion opportunities exist but require understanding local market dynamics.
+**Why it matters:**
+The business is heavily dependent on the UK market. This is both a strength (strong home market) and a risk (if UK economy slows, sales suffer). There's room to grow in other European countries, but it would require understanding local markets.
 
 ---
 
@@ -52,43 +54,45 @@ Build a sales forecasting system to process online retail sales data (~541K reco
 
 ![Daily Sales Features](reports/screenshots/02_daily_sales_features.png)
 
-**Business Question:** *What are the sales trends over time, and are there predictable patterns?*
+**What question does this answer?**
+> "Are sales going up or down over time, and can we spot patterns?"
 
-**Insights:**
-- **7-day moving average** smooths daily volatility — reveals underlying trend
-- **28-day moving average** shows longer-term direction — useful for inventory planning
-- **Seasonal spikes visible** — likely holiday periods (Christmas, Black Friday)
-- **Weekday-only trading** — gaps on weekends confirm B2B model
-- **Actionable insight:** Use 28-day MA for reorder timing; prepare inventory 2-3 weeks before predicted spikes
+**What the chart shows:**
+- The jagged line is daily sales — very volatile day-to-day
+- The smooth lines are moving averages (7-day and 28-day) that show the real trend
+- Clear spikes around holidays (Christmas, Black Friday)
+- No sales on weekends — this is a business-to-business operation
 
-**Data Story:** Sales show clear weekly cycles and seasonal patterns. The moving averages help separate noise from signal, enabling better demand forecasting.
+**Why it matters:**
+Moving averages help us see through the daily noise. The 28-day trend line is what you'd use for inventory planning — it shows where sales are heading without getting distracted by random daily fluctuations. The holiday spikes tell us when to stock up.
 
 ---
 
 ### 4. Average Sales by Day of Week
 
-**Business Question:** *Which days generate the most revenue, and how should we staff/schedule?*
+**What question does this answer?**
+> "Which days are busiest, and when should we focus our efforts?"
 
-**Insights:**
-- **Thursday peak** — highest average sales, possibly end-of-week restocking
-- **Tuesday strong** — early-week ordering pattern
-- **Saturday closed** — no trading (B2B wholesale model)
-- **Sunday minimal** — some limited activity
-- **Actionable insight:** Staff customer service and fulfillment teams heavily on Tuesday/Thursday; run promotions on slower days (Monday/Wednesday)
+**What the chart shows:**
+- Thursday is the biggest sales day
+- Tuesday is also strong
+- Saturday has zero sales (closed)
+- Sunday has very little activity
 
-**Data Story:** The business follows a clear weekly rhythm — customers order early in the week and again before the weekend. Understanding this pattern helps optimize operations.
+**Why it matters:**
+Customers tend to order early in the week and again before the weekend. Thursday being the peak suggests businesses are restocking before Friday. This pattern helps with staffing, promotions, and when to launch marketing campaigns.
 
 ---
 
-## Key Findings Summary
+## Key Takeaways
 
-| Finding | Business Impact |
-|---------|-----------------|
-| Right-skewed sales distribution | Focus on high-volume items; bulk pricing for large orders |
-| UK dominates revenue | Diversify markets; investigate international barriers |
-| Weekly cycle (Thu peak) | Optimize staffing and promotions by day |
-| Seasonal spikes | Pre-position inventory before holidays |
-| B2B model (weekdays only) | Weekend operations can be minimal |
+| What We Found | What It Means |
+|---------------|---------------|
+| Most orders are small (< £50) | Focus on high-volume, low-value inventory |
+| UK is 80% of revenue | Diversify to reduce market risk |
+| Thursday is the busiest day | Staff up and run promotions mid-week |
+| Clear holiday spikes | Stock up 2-3 weeks before major holidays |
+| No weekend sales | B2B model — weekends can be low-priority |
 
 ---
 
