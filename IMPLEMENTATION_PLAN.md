@@ -52,18 +52,19 @@ Build a sales forecasting system using Python, Pandas, NumPy, Matplotlib, Statsm
 
 ---
 
-### Sprint 3: Trend & Seasonality Analysis
+### Sprint 3: Trend & Seasonality Analysis ✓
 **Goal:** Detect and quantify patterns in sales data
 
 #### Milestones
-- [ ] Implement trend detection (linear, polynomial)
-- [ ] Decompose time series (trend, seasonal, residual)
-- [ ] Perform stationarity tests (ADF, KPSS)
-- [ ] Identify seasonal patterns (weekly, monthly, quarterly, yearly)
-- [ ] Create correlation analysis
+- [x] Implement trend detection (linear, polynomial)
+- [x] Decompose time series (trend, seasonal, residual)
+- [x] Perform stationarity tests (ADF, KPSS)
+- [x] Identify seasonal patterns (weekly, monthly, quarterly, yearly)
+- [x] Create correlation analysis
 
 #### Deliverables
-- Time series decomposition plots
+- Time series analysis module (src/time_series_analysis.py)
+- Trend & seasonality notebook (notebooks/03_Trend_Seasonality.ipynb)
 - Stationarity test results
 - Seasonality report with visualizations
 

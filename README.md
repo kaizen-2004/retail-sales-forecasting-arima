@@ -68,19 +68,71 @@ Moving averages help us see through the daily noise. The 28-day trend line is wh
 
 ---
 
-### 4. Average Sales by Day of Week
+### 4. Sales Trend Analysis
+
+![Trend Analysis](reports/screenshots/03_trend_analysis.png)
 
 **What question does this answer?**
-> "Which days are busiest, and when should we focus our efforts?"
+> "Is the business growing, shrinking, or staying flat?"
 
 **What the chart shows:**
-- Thursday is the biggest sales day
-- Tuesday is also strong
-- Saturday has zero sales (closed)
-- Sunday has very little activity
+- The red line shows a clear upward trend over the year
+- Sales grew from ~£20K/day to ~£40K/day — roughly doubled
+- The trend is statistically significant (not just random variation)
 
 **Why it matters:**
-Customers tend to order early in the week and again before the weekend. Thursday being the peak suggests businesses are restocking before Friday. This pattern helps with staffing, promotions, and when to launch marketing campaigns.
+The business is growing. This is important for forecasting — we can't assume next year will look like this year. The growth trend needs to be accounted for in our ARIMA model.
+
+---
+
+### 5. Time Series Decomposition
+
+![Time Series Decomposition](reports/screenshots/03_time_series_decomposition.png)
+
+**What question does this answer?**
+> "What are the different components driving sales — trend, seasonality, or random noise?"
+
+**What the chart shows:**
+- **Observed:** The raw daily sales data
+- **Trend:** The long-term direction (clearly increasing)
+- **Seasonal:** Repeating patterns within each week
+- **Residual:** What's left after removing trend and seasonality (random noise)
+
+**Why it matters:**
+Breaking down the data helps us understand what's predictable (trend + seasonality) vs. what's random (residual). For forecasting, we want to capture the trend and seasonal patterns while acknowledging that some variation is unpredictable.
+
+---
+
+### 6. Seasonal Patterns
+
+![Seasonal Patterns](reports/screenshots/03_seasonal_patterns.png)
+
+**What question does this answer?**
+> "Which days and months are busiest?"
+
+**What the chart shows:**
+- **Day of week:** Thursday and Tuesday are peak days; Saturday is closed
+- **Monthly:** December is the biggest month (holiday season); summer months are slower
+
+**Why it matters:**
+This tells us when to staff up, when to run promotions, and when to expect the most inventory turnover. December being the peak makes sense for a gift seller — Black Friday and Christmas drive massive orders.
+
+---
+
+### 7. Autocorrelation Analysis
+
+![Autocorrelation](reports/screenshots/03_autocorrelation.png)
+
+**What question does this answer?**
+> "Do past sales predict future sales, and how far back should we look?"
+
+**What the chart shows:**
+- **ACF (left):** Sales today are correlated with sales from 7, 14, 21 days ago (weekly pattern)
+- **PACF (right):** The direct influence of each lag on current sales
+- The peaks at multiples of 7 confirm the weekly seasonality
+
+**Why it matters:**
+This tells us the ARIMA model should use weekly lags (7 days). The autocorrelation pattern helps us choose the right model parameters for forecasting.
 
 ---
 
@@ -90,9 +142,11 @@ Customers tend to order early in the week and again before the weekend. Thursday
 |---------------|---------------|
 | Most orders are small (< £50) | Focus on high-volume, low-value inventory |
 | UK is 80% of revenue | Diversify to reduce market risk |
+| Sales doubled over the year | Business is growing — account for trend in forecasting |
 | Thursday is the busiest day | Staff up and run promotions mid-week |
-| Clear holiday spikes | Stock up 2-3 weeks before major holidays |
-| No weekend sales | B2B model — weekends can be low-priority |
+| Clear weekly seasonality | Use 7-day lags in ARIMA model |
+| December is peak month | Stock up heavily before holiday season |
+| Non-stationary data | Need to difference data before modeling |
 
 ---
 
@@ -124,10 +178,12 @@ sales-forecasting/
 │   └── DATASET.md        # Dataset documentation
 ├── notebooks/            # Jupyter analysis notebooks
 │   ├── 01_EDA.ipynb      # Exploratory data analysis
-│   └── 02_Data_Processing.ipynb  # Data processing pipeline
+│   ├── 02_Data_Processing.ipynb  # Data processing pipeline
+│   └── 03_Trend_Seasonality.ipynb  # Trend & seasonality analysis
 ├── src/                  # Python modules
 │   ├── data_processing.py
 │   ├── feature_engineering.py
+│   ├── time_series_analysis.py
 │   ├── validation.py
 │   └── utils.py
 ├── config/               # Configuration files
