@@ -136,6 +136,93 @@ This tells us the ARIMA model should use weekly lags (7 days). The autocorrelati
 
 ---
 
+## Model Development
+
+### 8. Train/Test Split
+
+![Train Test Split](reports/screenshots/04_train_test_split.png)
+
+**What question does this answer?**
+> "How do we validate the model without cheating?"
+
+**What the chart shows:**
+- Blue line: Training data (first 80% of the year)
+- Orange line: Test data (last 20% — held out for validation)
+- Red dashed line: The split point
+
+**Why it matters:**
+We can't test the model on data it's seen during training. The test set simulates "future" data — if the model performs well here, it should work on truly unseen data. This is how we know the forecast is reliable.
+
+---
+
+### 9. ARIMA Forecast
+
+![ARIMA Forecast](reports/screenshots/04_arima_forecast.png)
+
+**What question does this answer?**
+> "Can we predict future sales using past patterns?"
+
+**What the chart shows:**
+- Blue: Historical training data
+- Orange: Actual test data (ground truth)
+- Red dashed: ARIMA model predictions
+
+**Why it matters:**
+The ARIMA model captures the trend and short-term patterns. If the red line follows the orange line closely, the model is working well. Large gaps indicate where the model struggles — usually around sudden spikes or drops.
+
+---
+
+### 10. SARIMA Forecast (Seasonal)
+
+![SARIMA Forecast](reports/screenshots/04_sarima_forecast.png)
+
+**What question does this answer?**
+> "Does adding weekly seasonality improve the forecast?"
+
+**What the chart shows:**
+- Same as ARIMA, but with seasonal component added
+- The model now accounts for weekly patterns (Thursday peaks, etc.)
+
+**Why it matters:**
+SARIMA should perform better than basic ARIMA because it knows about the weekly cycle. If MAPE improves, the seasonal component is capturing real patterns in the data.
+
+---
+
+### 11. Model Comparison
+
+![Model Comparison](reports/screenshots/04_model_comparison.png)
+
+**What question does this answer?**
+> "Which model performs best, and did we hit our target?"
+
+**What the chart shows:**
+- Side-by-side comparison of ARIMA vs SARIMA
+- Lower MAPE = better accuracy
+- Target: MAPE ≤ 15%
+
+**Why it matters:**
+This tells us which model to deploy. If MAPE is under 15%, the forecast is accurate enough for inventory planning. If not, we may need more data or a different approach.
+
+---
+
+### 12. Residual Analysis
+
+![Residual Analysis](reports/screenshots/04_residual_analysis.png)
+
+**What question does this answer?**
+> "Did the model capture all the patterns, or is there information it's missing?"
+
+**What the chart shows:**
+- **Top left:** Residuals over time (should be random noise around zero)
+- **Top right:** Residual distribution (should be bell-shaped)
+- **Bottom left:** Actual vs predicted (should fall on the red line)
+- **Bottom right:** Q-Q plot (should follow the diagonal)
+
+**Why it matters:**
+If residuals show patterns (trends, cycles), the model is missing something. Random residuals = good model. This is the final check before we trust the forecast.
+
+---
+
 ## Key Takeaways
 
 | What We Found | What It Means |
@@ -147,6 +234,7 @@ This tells us the ARIMA model should use weekly lags (7 days). The autocorrelati
 | Clear weekly seasonality | Use 7-day lags in ARIMA model |
 | December is peak month | Stock up heavily before holiday season |
 | Non-stationary data | Need to difference data before modeling |
+| SARIMA outperforms ARIMA | Weekly seasonality adds predictive value |
 
 ---
 
@@ -179,11 +267,13 @@ sales-forecasting/
 ├── notebooks/            # Jupyter analysis notebooks
 │   ├── 01_EDA.ipynb      # Exploratory data analysis
 │   ├── 02_Data_Processing.ipynb  # Data processing pipeline
-│   └── 03_Trend_Seasonality.ipynb  # Trend & seasonality analysis
+│   ├── 03_Trend_Seasonality.ipynb  # Trend & seasonality analysis
+│   └── 04_ARIMA_Modeling.ipynb  # ARIMA/SARIMA model development
 ├── src/                  # Python modules
 │   ├── data_processing.py
 │   ├── feature_engineering.py
 │   ├── time_series_analysis.py
+│   ├── models.py
 │   ├── validation.py
 │   └── utils.py
 ├── config/               # Configuration files
@@ -200,7 +290,7 @@ sales-forecasting/
 - **Package Manager:** uv (fast Python package installer)
 - **Data Processing:** Pandas, NumPy
 - **Database:** SQLite
-- **Modeling:** Statsmodels (ARIMA)
+- **Modeling:** Statsmodels (ARIMA, SARIMA)
 - **Visualization:** Matplotlib, Seaborn, Plotly
 - **Testing:** Pytest
 

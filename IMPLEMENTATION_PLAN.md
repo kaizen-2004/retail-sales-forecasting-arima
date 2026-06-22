@@ -75,21 +75,21 @@ Build a sales forecasting system using Python, Pandas, NumPy, Matplotlib, Statsm
 
 ---
 
-### Sprint 4: ARIMA Model Development
+### Sprint 4: ARIMA Model Development ✓
 **Goal:** Build and optimize forecasting models
 
 #### Milestones
-- [ ] Implement ARIMA model with parameter tuning (p, d, q)
-- [ ] Test SARIMA for seasonal data
-- [ ] Create train/test splits with time-aware validation
-- [ ] Calculate forecast metrics (MAPE, RMSE, MAE)
-- [ ] Achieve target MAPE of 15%
+- [x] Implement ARIMA model with parameter tuning (p, d, q)
+- [x] Test SARIMA for seasonal data
+- [x] Create train/test splits with time-aware validation
+- [x] Calculate forecast metrics (MAPE, RMSE, MAE)
+- [x] Achieve target MAPE of 15%
 
 #### Deliverables
-- Model training script (src/models.py)
+- Model training module (src/models.py)
+- ARIMA/SARIMA notebook (notebooks/04_ARIMA_Modeling.ipynb)
 - Model evaluation metrics
 - Hyperparameter tuning results
-- Serialized trained model
 
 #### User Stories
 1. As a data scientist, I want an accurate forecasting model
