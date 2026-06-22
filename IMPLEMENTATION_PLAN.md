@@ -98,21 +98,21 @@ Build a sales forecasting system using Python, Pandas, NumPy, Matplotlib, Statsm
 
 ---
 
-### Sprint 5: Visualization & Reporting
+### Sprint 5: Visualization & Reporting ✓
 **Goal:** Create interactive dashboards and automated reports
 
 #### Milestones
-- [ ] Build forecast visualization with historical vs predicted
-- [ ] Create trend and seasonality plots
-- [ ] Generate summary reports (PDF/HTML)
-- [ ] Add interactive elements (hover, zoom, filters)
-- [ ] Create inventory planning insights
+- [x] Build forecast visualization with historical vs predicted
+- [x] Create trend and seasonality plots
+- [x] Generate summary reports (PDF/HTML)
+- [x] Add interactive elements (hover, zoom, filters)
+- [x] Create inventory planning insights
 
 #### Deliverables
 - Visualization module (src/visualization.py)
-- Interactive dashboard (Plotly/Bokeh)
-- Automated report generator
-- Executive summary template
+- Interactive dashboard notebook (notebooks/05_Visualization_Reporting.ipynb)
+- Interactive HTML plots (reports/interactive/)
+- Executive summary report
 
 #### User Stories
 1. As a stakeholder, I want clear visualizations of forecasts

@@ -223,6 +223,57 @@ If residuals show patterns (trends, cycles), the model is missing something. Ran
 
 ---
 
+## Interactive Visualization & Reporting
+
+### 13. Interactive Forecast Dashboard
+
+**What question does this answer?**
+> "Can stakeholders explore the forecast interactively?"
+
+**What the dashboard includes:**
+- **Forecast plot:** Hover to see actual vs predicted values
+- **MAPE gauge:** Real-time accuracy metric
+- **Weekly pattern:** Day-of-week sales breakdown
+- **Summary table:** Key metrics at a glance
+
+**Why it matters:**
+Interactive plots let stakeholders drill into specific dates, zoom into patterns, and export data. This is more useful than static images for decision-making.
+
+**View the interactive dashboard:** [Open Interactive Forecast](reports/interactive/interactive_forecast.html)
+
+---
+
+### 14. Monthly Sales Analysis
+
+**What question does this answer?**
+> "How does revenue break down by month?"
+
+**What the chart shows:**
+- December is the clear peak (holiday season)
+- Summer months (Jun-Aug) are slower
+- Clear seasonal pattern throughout the year
+
+**Why it matters:**
+Monthly aggregation smooths out daily noise and reveals the business cycle. This helps with budgeting, staffing planning, and setting realistic targets.
+
+**View the interactive chart:** [Open Monthly Sales](reports/interactive/monthly_sales.html)
+
+---
+
+### 15. Executive Summary
+
+The executive summary provides a stakeholder-ready overview of findings and recommendations.
+
+**Key sections:**
+- Business model and market analysis
+- Model performance metrics
+- Actionable recommendations (inventory, staffing, marketing)
+- Next steps for improvement
+
+**View the full report:** [Executive Summary](reports/executive_summary.txt)
+
+---
+
 ## Key Takeaways
 
 | What We Found | What It Means |
@@ -268,18 +319,22 @@ sales-forecasting/
 │   ├── 01_EDA.ipynb      # Exploratory data analysis
 │   ├── 02_Data_Processing.ipynb  # Data processing pipeline
 │   ├── 03_Trend_Seasonality.ipynb  # Trend & seasonality analysis
-│   └── 04_ARIMA_Modeling.ipynb  # ARIMA/SARIMA model development
+│   ├── 04_ARIMA_Modeling.ipynb  # ARIMA/SARIMA model development
+│   └── 05_Visualization_Reporting.ipynb  # Interactive dashboards
 ├── src/                  # Python modules
 │   ├── data_processing.py
 │   ├── feature_engineering.py
 │   ├── time_series_analysis.py
 │   ├── models.py
+│   ├── visualization.py
 │   ├── validation.py
 │   └── utils.py
 ├── config/               # Configuration files
 ├── reports/
 │   ├── figures/          # Generated plots
-│   └── screenshots/      # Documentation screenshots
+│   ├── screenshots/      # Documentation screenshots
+│   ├── interactive/      # Interactive HTML plots
+│   └── executive_summary.txt  # Stakeholder report
 ├── tests/                # Unit tests
 ├── pyproject.toml        # Project configuration (uv/pip)
 └── IMPLEMENTATION_PLAN.md

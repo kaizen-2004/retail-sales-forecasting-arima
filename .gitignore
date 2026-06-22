@@ -97,13 +97,15 @@ Thumbs.db
 # Project specific
 data/raw/*.csv
 data/processed/*.csv
+!data/processed/forecast_results.csv
 data/database/*.db
 reports/figures/*.png
 reports/figures/*.jpg
 *.h5
 *.hdf5
 
-# Allow screenshots
+# Allow screenshots and interactive reports
 !reports/screenshots/*.png
 !reports/screenshots/*.jpg
 !reports/screenshots/*.jpeg
+!reports/interactive/*.html
