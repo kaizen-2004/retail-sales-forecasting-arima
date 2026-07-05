@@ -5,286 +5,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retail Sales Forecasting Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #ffffff;
+            --fg: #1d1d1f;
+            --card: #ffffff;
+            --card-fg: #1d1d1f;
+            --primary: #0071e3;
+            --primary-fg: #ffffff;
+            --secondary: #f5f5f7;
+            --secondary-fg: #1d1d1f;
+            --muted: #f5f5f7;
+            --muted-fg: #6e6e73;
+            --border: rgba(0, 0, 0, 0.08);
+            --success: #34c759;
+            --error: #ff3b30;
         }
 
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1d1d1f;
+                --fg: #f5f5f7;
+                --card: #2c2c2e;
+                --card-fg: #f5f5f7;
+                --primary: #2997ff;
+                --primary-fg: #ffffff;
+                --secondary: #3a3a3c;
+                --secondary-fg: #f5f5f7;
+                --muted: #3a3a3c;
+                --muted-fg: #aeaeb2;
+                --border: rgba(255, 255, 255, 0.1);
+                --success: #30d158;
+                --error: #ff453a;
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
-            color: #E2E8F0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
             min-height: 100vh;
+            line-height: 1.5;
         }
-
         .hero {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
-            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
         }
-
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 50%, #F472B6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
+            color: var(--fg);
+            margin-bottom: 12px;
         }
-
         .hero .subtitle {
-            font-size: 1.2rem;
-            color: #94A3B8;
+            font-size: 1.1rem;
+            color: var(--muted-fg);
             max-width: 600px;
             margin: 0 auto;
         }
-
         .hero .tech-stack {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 10px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
-
         .tech-badge {
-            padding: 8px 16px;
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: #60A5FA;
+            padding: 6px 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: var(--muted-fg);
         }
-
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
-
         .metrics-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
             margin-bottom: 40px;
         }
-
         .metric-card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 16px;
-            padding: 25px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
         }
-
-        .metric-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
-        }
-
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-        }
-
-        .metric-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
         .metric-value {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 5px;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
-
         .metric-label {
-            font-size: 0.85rem;
-            color: #94A3B8;
+            font-size: 0.8rem;
+            color: var(--muted-fg);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
-
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 16px;
             margin-bottom: 40px;
         }
-
         .chart-card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
         }
-
-        .chart-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
-        }
-
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+            margin-bottom: 16px;
         }
-
         .chart-title {
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #F8FAFC;
+            color: var(--fg);
         }
-
         .chart-badge {
-            padding: 6px 12px;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 10px;
+            background: var(--secondary);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            font-size: 0.75rem;
-            color: #10B981;
+            font-size: 0.7rem;
+            color: var(--muted-fg);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
         .chart-description {
-            font-size: 0.9rem;
-            color: #94A3B8;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            color: var(--muted-fg);
+            margin-bottom: 16px;
         }
-
-        canvas {
-            max-height: 350px;
-        }
-
+        canvas { max-height: 300px; }
         .insights-section {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 20px;
-            padding: 40px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
             margin-bottom: 40px;
         }
-
         .insights-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #F8FAFC;
-            margin-bottom: 30px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 24px;
             text-align: center;
         }
-
         .insights-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
         }
-
         .insight-card {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            transition: transform 0.3s;
+            background: var(--secondary);
+            border-radius: 8px;
+            padding: 20px;
         }
-
-        .insight-card:hover {
-            transform: scale(1.02);
-        }
-
-        .insight-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-
         .insight-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            color: #F8FAFC;
-            margin-bottom: 10px;
+            color: var(--primary);
+            margin-bottom: 8px;
         }
-
         .insight-text {
-            font-size: 0.9rem;
-            color: #94A3B8;
+            font-size: 0.85rem;
+            color: var(--muted-fg);
             line-height: 1.6;
         }
-
         .cta-section {
             text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.1) 100%);
+            padding: 40px 20px;
         }
-
         .cta-button {
             display: inline-block;
-            padding: 16px 40px;
-            background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-            color: white;
+            padding: 12px 32px;
+            background: var(--primary);
+            color: var(--primary-fg);
             text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: opacity 150ms ease;
         }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
-        }
-
+        .cta-button:hover { opacity: 0.9; }
         footer {
             text-align: center;
-            padding: 30px;
-            border-top: 1px solid rgba(59, 130, 246, 0.2);
-            color: #64748B;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted-fg);
+            font-size: 0.85rem;
         }
-
         footer a {
-            color: #60A5FA;
+            color: var(--primary);
             text-decoration: none;
         }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <section class="hero">
         <h1>Retail Sales Forecasting</h1>
-        <p class="subtitle">Advanced time series analysis using ARIMA/SARIMA models to predict retail sales with 88% accuracy</p>
+        <p class="subtitle">Time series analysis using ARIMA/SARIMA models to predict retail sales with 88% accuracy</p>
         <div class="tech-stack">
             <span class="tech-badge">Python</span>
             <span class="tech-badge">Pandas</span>
@@ -297,28 +231,23 @@
 
     <div class="container">
         <div class="metrics-row">
-            <div class="metric-card" style="--accent: #3B82F6;">
-                <div class="metric-icon">📊</div>
+            <div class="metric-card">
                 <div class="metric-value">541K</div>
                 <div class="metric-label">Transactions</div>
             </div>
-            <div class="metric-card" style="--accent: #10B981;">
-                <div class="metric-icon">💰</div>
+            <div class="metric-card">
                 <div class="metric-value">£9.7M</div>
                 <div class="metric-label">Total Revenue</div>
             </div>
-            <div class="metric-card" style="--accent: #8B5CF6;">
-                <div class="metric-icon">🎯</div>
+            <div class="metric-card">
                 <div class="metric-value">88%</div>
                 <div class="metric-label">Accuracy (MAPE)</div>
             </div>
-            <div class="metric-card" style="--accent: #F59E0B;">
-                <div class="metric-icon">🌍</div>
+            <div class="metric-card">
                 <div class="metric-value">37</div>
                 <div class="metric-label">Countries</div>
             </div>
-            <div class="metric-card" style="--accent: #EF4444;">
-                <div class="metric-icon">📈</div>
+            <div class="metric-card">
                 <div class="metric-value">7-Day</div>
                 <div class="metric-label">Forecast Horizon</div>
             </div>
@@ -328,9 +257,9 @@
             <div class="chart-card">
                 <div class="chart-header">
                     <h3 class="chart-title">Revenue Forecast</h3>
-                    <span class="chart-badge">Live</span>
+                    <span class="chart-badge">7-Day</span>
                 </div>
-                <p class="chart-description">7-day ahead SARIMA forecast with 95% confidence intervals</p>
+                <p class="chart-description">SARIMA forecast with 95% confidence intervals</p>
                 <canvas id="forecastChart"></canvas>
             </div>
             <div class="chart-card">
@@ -354,7 +283,7 @@
                     <h3 class="chart-title">Monthly Pattern</h3>
                     <span class="chart-badge">Seasonal</span>
                 </div>
-                <p class="chart-description">Monthly revenue with Q4 holiday peak highlighted</p>
+                <p class="chart-description">Monthly revenue with Q4 holiday peak</p>
                 <canvas id="monthlyChart"></canvas>
             </div>
         </div>
@@ -363,22 +292,18 @@
             <h2 class="insights-title">Key Insights</h2>
             <div class="insights-grid">
                 <div class="insight-card">
-                    <div class="insight-icon">📅</div>
                     <h3 class="insight-title">Weekly Seasonality</h3>
                     <p class="insight-text">Strong weekday vs weekend pattern captured by SARIMA model with period=7</p>
                 </div>
                 <div class="insight-card">
-                    <div class="insight-icon">🎄</div>
                     <h3 class="insight-title">Holiday Peak</h3>
                     <p class="insight-text">December shows 85% revenue increase due to holiday season shopping</p>
                 </div>
                 <div class="insight-card">
-                    <div class="insight-icon">🇬🇧</div>
                     <h3 class="insight-title">UK Dominance</h3>
                     <p class="insight-text">United Kingdom accounts for 82% of total revenue across all markets</p>
                 </div>
                 <div class="insight-card">
-                    <div class="insight-icon">📊</div>
                     <h3 class="insight-title">Model Accuracy</h3>
                     <p class="insight-text">MAPE of 12% achieved, beating the 15% target threshold</p>
                 </div>
@@ -398,10 +323,14 @@
     </footer>
 
     <script>
-        Chart.defaults.color = '#94A3B8';
-        Chart.defaults.borderColor = 'rgba(59, 130, 246, 0.1)';
+        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+        const textColor = isDark ? '#aeaeb2' : '#6e6e73';
+        const primaryColor = isDark ? '#2997ff' : '#0071e3';
 
-        // Forecast Data
+        Chart.defaults.color = textColor;
+        Chart.defaults.borderColor = gridColor;
+
         const forecastLabels = ['Today', '+1', '+2', '+3', '+4', '+5', '+6', '+7'];
         const forecastData = [26800, 27200, 25800, 28100, 26500, 19200, 16800, 22400];
         const upperBound = [26800, 29300, 28100, 30400, 28800, 21300, 19100, 24700];
@@ -415,19 +344,18 @@
                     {
                         label: 'Forecast',
                         data: forecastData,
-                        borderColor: '#10B981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderColor: '#34c759',
+                        backgroundColor: 'transparent',
                         fill: false,
                         tension: 0.4,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#10B981',
-                        borderWidth: 3
+                        pointRadius: 4,
+                        borderWidth: 2
                     },
                     {
                         label: 'Upper Bound',
                         data: upperBound,
                         borderColor: 'transparent',
-                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        backgroundColor: isDark ? 'rgba(52, 199, 89, 0.15)' : 'rgba(52, 199, 89, 0.1)',
                         fill: '+1',
                         pointRadius: 0
                     },
@@ -435,7 +363,7 @@
                         label: 'Lower Bound',
                         data: lowerBound,
                         borderColor: 'transparent',
-                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        backgroundColor: 'transparent',
                         fill: false,
                         pointRadius: 0
                     }
@@ -446,28 +374,19 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#F8FAFC',
-                        bodyColor: '#E2E8F0',
-                        borderColor: '#3B82F6',
-                        borderWidth: 1,
-                        padding: 12,
-                        callbacks: {
-                            label: ctx => ctx.raw ? `£${ctx.raw.toLocaleString()}` : ''
-                        }
+                        callbacks: { label: ctx => ctx.raw ? `£${ctx.raw.toLocaleString()}` : '' }
                     }
                 },
                 scales: {
                     y: {
-                        grid: { color: 'rgba(59, 130, 246, 0.1)' },
-                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K` }
+                        grid: { color: gridColor },
+                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K`, color: textColor }
                     },
-                    x: { grid: { display: false } }
+                    x: { grid: { display: false }, ticks: { color: textColor } }
                 }
             }
         });
 
-        // Revenue Trend
         const days = Array.from({length: 30}, (_, i) => `Day ${i + 1}`);
         const revenue = [18500, 22300, 19800, 24100, 21500, 15200, 12800, 19200, 23400, 20100, 25600, 22800, 16500, 13200, 20500, 24800, 21200, 26300, 23100, 17800, 14500, 21800, 25200, 22400, 27100, 24500, 18200, 15100, 22500, 26800];
 
@@ -478,17 +397,11 @@
                 datasets: [{
                     label: 'Revenue',
                     data: revenue,
-                    borderColor: '#3B82F6',
-                    backgroundColor: (ctx) => {
-                        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 350);
-                        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
-                        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-                        return gradient;
-                    },
+                    borderColor: primaryColor,
+                    backgroundColor: isDark ? 'rgba(41, 151, 255, 0.1)' : 'rgba(0, 113, 227, 0.1)',
                     fill: true,
                     tension: 0.4,
                     pointRadius: 2,
-                    pointHoverRadius: 6,
                     borderWidth: 2
                 }]
             },
@@ -497,28 +410,19 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#F8FAFC',
-                        bodyColor: '#E2E8F0',
-                        borderColor: '#3B82F6',
-                        borderWidth: 1,
-                        padding: 12,
-                        callbacks: {
-                            label: ctx => `£${ctx.raw.toLocaleString()}`
-                        }
+                        callbacks: { label: ctx => `£${ctx.raw.toLocaleString()}` }
                     }
                 },
                 scales: {
                     y: {
-                        grid: { color: 'rgba(59, 130, 246, 0.1)' },
-                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K` }
+                        grid: { color: gridColor },
+                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K`, color: textColor }
                     },
-                    x: { grid: { display: false } }
+                    x: { grid: { display: false }, ticks: { color: textColor } }
                 }
             }
         });
 
-        // Country Chart
         const countries = ['UK', 'Netherlands', 'Ireland', 'Germany', 'France', 'Australia', 'Norway', 'Italy', 'Sweden', 'Japan'];
         const countryRevenue = [7820000, 542000, 385000, 312000, 298000, 185000, 142000, 128000, 115000, 98000];
 
@@ -529,20 +433,8 @@
                 datasets: [{
                     label: 'Revenue',
                     data: countryRevenue,
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.8)',
-                        'rgba(139, 92, 246, 0.8)',
-                        'rgba(236, 72, 153, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(6, 182, 212, 0.8)',
-                        'rgba(132, 204, 22, 0.8)',
-                        'rgba(249, 115, 22, 0.8)',
-                        'rgba(99, 102, 241, 0.8)',
-                        'rgba(20, 184, 166, 0.8)'
-                    ],
-                    borderRadius: 8,
-                    borderSkipped: false
+                    backgroundColor: primaryColor,
+                    borderRadius: 4
                 }]
             },
             options: {
@@ -551,28 +443,19 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#F8FAFC',
-                        bodyColor: '#E2E8F0',
-                        borderColor: '#3B82F6',
-                        borderWidth: 1,
-                        padding: 12,
-                        callbacks: {
-                            label: ctx => `£${(ctx.raw/1000000).toFixed(2)}M`
-                        }
+                        callbacks: { label: ctx => `£${(ctx.raw/1000000).toFixed(2)}M` }
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(59, 130, 246, 0.1)' },
-                        ticks: { callback: v => `£${(v/1000000).toFixed(1)}M` }
+                        grid: { color: gridColor },
+                        ticks: { callback: v => `£${(v/1000000).toFixed(1)}M`, color: textColor }
                     },
-                    y: { grid: { display: false } }
+                    y: { grid: { display: false }, ticks: { color: textColor } }
                 }
             }
         });
 
-        // Monthly Chart
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const monthlyRevenue = [680000, 720000, 850000, 780000, 820000, 890000, 920000, 880000, 950000, 1120000, 1350000, 1280000];
 
@@ -583,11 +466,8 @@
                 datasets: [{
                     label: 'Revenue',
                     data: monthlyRevenue,
-                    backgroundColor: months.map((_, i) => 
-                        i >= 9 ? 'rgba(245, 158, 11, 0.8)' : 'rgba(59, 130, 246, 0.5)'
-                    ),
-                    borderRadius: 8,
-                    borderSkipped: false
+                    backgroundColor: primaryColor,
+                    borderRadius: 4
                 }]
             },
             options: {
@@ -595,23 +475,15 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleColor: '#F8FAFC',
-                        bodyColor: '#E2E8F0',
-                        borderColor: '#3B82F6',
-                        borderWidth: 1,
-                        padding: 12,
-                        callbacks: {
-                            label: ctx => `£${(ctx.raw/1000).toFixed(0)}K`
-                        }
+                        callbacks: { label: ctx => `£${(ctx.raw/1000).toFixed(0)}K` }
                     }
                 },
                 scales: {
                     y: {
-                        grid: { color: 'rgba(59, 130, 246, 0.1)' },
-                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K` }
+                        grid: { color: gridColor },
+                        ticks: { callback: v => `£${(v/1000).toFixed(0)}K`, color: textColor }
                     },
-                    x: { grid: { display: false } }
+                    x: { grid: { display: false }, ticks: { color: textColor } }
                 }
             }
         });
